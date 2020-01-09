@@ -1,3 +1,22 @@
+// const API_URL = 'https://raw.githubusercontent.com/Mi3i4/JS/master';
+// function makeGetRequest(url, cb) {
+//     let xhr;
+//     if(window.XMLHttpRequest){
+//         xhr = new window.XMLHttpRequest();
+//     }else {
+//         xhr = new ActiveXObject('Micrisoft.XMLHTTP');
+//     }
+//     xhr.onreadystatechange = function () {
+//         if(xhr.readyState === 4 && xhr.status === 200){
+//             const body = JSON.parse(xhr.responseText);
+//             console.log(xhr)
+//             cb(body);
+//         }
+//     };
+//     xhr.open('GET', url);
+//     xhr.send();
+// }
+
 class GoodsItem {
     constructor(title = 'Без имени', price = '', id) {
         this.title = title;
@@ -15,21 +34,45 @@ class GoodsItem {
 class GoodsList {
     constructor() {
         this.goods = [];
-        this.fetchGoods();
     }
 
-    fetchGoods() {
-        this.goods = [
-            { id: 1, title: 'Laptop',price: 100 },
-            { id: 2, title: 'Mouse', price: 200 },
-            { id: 3, title: 'Monitor', price: 300 },
-            { id: 4, title: 'Keyboard', price: 400 },
-            { id: 5, title: 'Laptop', price: 100 },
-            { id: 6, title: 'Mouse', price: 200 },
-            { id: 7, title: 'Monitor', price: 300 },
-            { id: 8, title: 'Keyboard', price: 400 },
-        ]
+    // fetchGoods(cb) {
+    //     makeGetRequest(`${API_URL}/goods.json`, (goods) => {
+    //         this.goods = goods;
+    //         cb();
+    //     })
+    // }
+
+    async getGoods() {
+        let response = await fetch(`https://raw.githubusercontent.com/Mi3i4/JS/master/goods.json`); // завершается с заголовками ответа
+        let result = await response.json(); // читать тело ответа в формате JSON
+        console.log(result);
+        result.forEach(i => {this.goods.push(i)});
+        this.render();
     }
+        // fetch('https://raw.githubusercontent.com/Mi3i4/JS/master/goods.json')
+        //     .then(response => response.json())
+        //     .then(
+        //         function(response) {
+        //             // if (response.status !== 200) {
+        //             //     console.log('Looks like there was a problem. Status Code: ' +
+        //             //         response.status);
+        //             //     return;
+        //             // }
+        //             response.json().then(function(data) {
+        //                 console.log(data);
+        //                 // console.log(response);
+        //                 // let a = this.goods;
+        //                 // a.concat(data);
+        //                 // console.log(this.goods);
+        //             });
+        //         }
+        //     )
+        //     .catch(function(err) {
+        //         console.log('Error', err);
+        //     });
+
+
 
     render() {
         let listHtml = '';
@@ -69,7 +112,7 @@ class Cart extends GoodsList {
         });
         this.render();
         document.querySelector('.clean-cart-button').addEventListener("click", this.cleanCart);
-        this.fetchGoods();
+        this.getGoods();
     }
     addGood = (event) => {
        const button_id = event.target.id;
@@ -188,6 +231,7 @@ class CartItem extends GoodsItem {
 }
 
 const list = new GoodsList();
-list.render();
+list.getGoods(() => {
+    list.render();
+});
 const item_cart = new Cart();
-// console.log(item_cart.totalPrice());
