@@ -7,26 +7,44 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="main.css">
-    <script src="script.js" async></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="vue-shop.js" async></script>
     <title>Shop</title>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <button class="cart-button">Cart</button>
-        </header>
-        <main>
-            <div class="goods-list"></div>
-            <div class="cart-box">
-                <h2>Cart</h2>
-                <div class="cart"></div>
-                <div>
-                    <h2>Total</h2>
-                    <div class="total-sum"></div>
+ <body>
+     <div id="app">
+        <div class="container">
+            <header>
+                <button class="cart-button">Cart</button>
+            </header>
+            <main>
+                <div class="goods-list">
+                    <div class="goods-item" v-for="item in goods">
+                        <h2 class="title">{{ item.title }}</h2>
+                        <p>{{ item.price }} $</p>
+                        <button :id="item.id" class="item-button" @click="addGood">Add</button></div>
                 </div>
-                <button id="clean" class="clean-cart-button">Clean-cart</button>
-            </div>
-        </main>
+                <div class="cart-box">
+                    <h2>Cart</h2>
+                    <div class="cart">
+                        <div class="cart-item" v-for="item in cart">
+                            <div>
+                                <button :id="item.id" class="add-item-button">+</button>
+                                <button :id="item.id" class="remove-item-button">-</button>
+                            </div>
+                            <h2 class="cart-title">{{ item.title }}</h2>
+                            <p>{{ item.price }}</p><h2 class="cart-title">Quantity</h2><p>{{ cartCount }}</p>
+                            <button :id="item.id" class="delete-item-button" @click="deleteGood">Delete</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h2>Total</h2>
+                        <div class="total-sum"></div>
+                    </div>
+                    <button id="clean" class="clean-cart-button" @click="cleanCart">Clean-cart</button>
+                </div>
+            </main>
+        </div>
     </div>
 </body>
 </html>

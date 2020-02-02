@@ -55,25 +55,25 @@
 
 // const API_URL = 'https://raw.githubusercontent.com/Mi3i4/JS/master';
 
-// fetch('https://raw.githubusercontent.com/Mi3i4/JS/master/goods.json', {mode:"cors"})
-//     .then(
-//         function(response) {
-//             if (response.status !== 200) {
-//                 console.log('Looks like there was a problem. Status Code: ' +
-//                     response.status);
-//                 return;
-//             }
-//
-//             // Examine the text in the response
-//             response.json().then(function(data) {
-//                 console.log(data);
-//             });
-//         }
-//     )
-//     .catch(function(err) {
-//         console.log('Fetch Error :-S', err);
-//     });
-//
+fetch('https://raw.githubusercontent.com/Mi3i4/JS/master/goods.json', {mode:"cors"})
+    .then(
+        function(response) {
+            if (response.status !== 200) {
+                console.log('Looks like there was a problem. Status Code: ' +
+                    response.status);
+                return;
+            }
+
+            // Examine the text in the response
+            response.json().then(function(data) {
+                console.log(data);
+            });
+        }
+    )
+    .catch(function(err) {
+        console.log('Fetch Error :-S', err);
+    });
+
 // fetch('https://raw.githubusercontent.com/Mi3i4/JS/master/goods.json').then(function(response) {
 //     console.log(response.headers.get('Content-Type'));
 //     console.log(response.headers.get('Date'));
