@@ -1,13 +1,54 @@
+Vue.component('cart-item', {
+    methods: {
+        increaseGood(item) {
+            const item_in_cart = this.cart.filter(i => i.id === item.id)[0];
+            if (item_in_cart) {
+                item_in_cart.counter++;
+            } else {
+                return alert('нет такого товара');
+            }
+        },
+        decreaseGood(item) {
+            const item_in_cart = this.cart.filter(i => i.id === item.id)[0];
+            if (item_in_cart) {
+                if (item_in_cart.counter === 0) {
+                    this.cart.slice(0, 1);
+                } else {
+                    item_in_cart.counter--;
+                }
+            }
+        },
+    },
+    props: [
+        'item',
+        'goods',
+        'cart',
+    ],
+    template: `
+        <div>
+            <div>
+                <button class="add-item-button" @click="increaseGood(item)">+</button>
+                <button class="remove-item-button" @click="decreaseGood(item)">-</button>
+            </div>
+            <div>
+                <h2 class="cart-title">{{ item.title }}</h2>
+                <p>{{ item.price }}</p><h2 class="cart-title">Quantity</h2><p>{{ item.counter }}</p>
+                <button class="delete-item-button" @click="$emit('delete', item)">Delete</button>
+            </div>
+        </div>
+    `,
+});
+
 const app = new Vue({
     el: '#app',
     data: {
         goods: [],
         cart: [],
-        counter: 0,
+        counter: 0
     },
     computed: {
-        cartCount: function () {
-            return this.cart.length;
+        cartCount() {
+            return this.cart.reduce((acc, item) => acc + item.counter, 0);
         },
     },
     methods: {
@@ -15,27 +56,22 @@ const app = new Vue({
              let response = await fetch("https://raw.githubusercontent.com/Mi3i4/JS/master/goods.json");
              this.goods = await response.json();
         },
-        addGood: function (event) {
-            const button_id = event.target.id;
-            const item = this.goods.filter(i => i.id == button_id)[0];
-            if(item) {
-                const id = item.id;
-                const item_in_cart = this.cart.filter(i => i.id == id)[0];
-                if(item_in_cart) {
-                    item_in_cart.counter++;
-                    return;
-                }
-                 this.cart.push(item);
-            }else {
-                alert('нет такого товара');
-            }
+        addInCart(item) {
+             const item_in_cart = this.cart.filter(i => i.id === item.id)[0];
+             if (item_in_cart) {
+                 item_in_cart.counter++;
+                 return;
+             }
+             const item_cart = Object.assign({
+                 counter: 1,
+             }, item);
+             this.cart.push(item_cart);
         },
-        cleanCart: function() {
+        cleanCart() {
             this.cart = [];
         },
-        deleteGood: function(event) {
-            const button_id = event.target.id;
-            this.cart = this.cart.filter((i) => i.id != button_id);
+        deleteGood(item) {
+            this.cart = this.cart.filter((i) => i.id !== item.id);
         },
     },
     mounted() {
@@ -44,7 +80,6 @@ const app = new Vue({
         }catch (e) {
             console.log(e);
         }
-        // console.log(this.data);
     }
 });
 

@@ -22,19 +22,17 @@
                     <div class="goods-item" v-for="item in goods">
                         <h2 class="title">{{ item.title }}</h2>
                         <p>{{ item.price }} $</p>
-                        <button :id="item.id" class="item-button" @click="addGood">Add</button></div>
+                        <button :id="item.id" class="item-button" @click="addInCart(item)">Add</button></div>
                 </div>
                 <div class="cart-box">
                     <h2>Cart</h2>
+                    <p>{{ cartCount }}</p>
                     <div class="cart">
                         <div class="cart-item" v-for="item in cart">
-                            <div>
-                                <button :id="item.id" class="add-item-button">+</button>
-                                <button :id="item.id" class="remove-item-button">-</button>
-                            </div>
-                            <h2 class="cart-title">{{ item.title }}</h2>
-                            <p>{{ item.price }}</p><h2 class="cart-title">Quantity</h2><p>{{ cartCount }}</p>
-                            <button :id="item.id" class="delete-item-button" @click="deleteGood">Delete</button>
+<!--                            <h2 class="cart-title">{{ item.title }}</h2>-->
+<!--                            <p>{{ item.price }}</p><h2 class="cart-title">Quantity</h2><p>{{ item.counter }}</p>-->
+<!--                            <button :id="item.id" class="delete-item-button" @click="deleteGood">Delete</button>-->
+                            <cart-item :item="item" @delete="deleteGood"/>
                         </div>
                     </div>
                     <div>
